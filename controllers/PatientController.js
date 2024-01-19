@@ -121,27 +121,81 @@ async search(req, res) {
   }
 }
 
-async findByStatus(req, res) {
-  const { status } = req.params;
-  const patients = await Patient.status(status);
+async positive(req, res) {
+  const status = "positive";
+  const patient = await Patient.findByStatus(status);
+  const total = await Patient.total(status);
 
-  if (patients) {
+  if (patient) {
     const data = {
-      message: `Menampilkan patients status ${status}`,
-      data: patients,
+      message: `Menampilkan patient yang ${status}`,
+      total: total,
+      data: patient,
     };
 
+    // The reqeust succeeded
     return res.status(200).json(data);
   } else {
     const data = {
-      message: `Data patients status ${status} tidak ditemukan`,
+      message: `Data patient yang ${status} tidak ditemukan`,
     };
+
+    // Resource not found
     return res.status(404).json(data);
   }
 }
 
+// Get Recovered Resource
+async recovered(req, res) {
+  const status = "recovered";
+  const patient = await Patient.findByStatus(status);
+  const total = await Patient.total(status);
 
+  if (patient) {
+    const data = {
+      message: `Menampilkan patient yang sembuh`,
+      total: total,
+      data: patient,
+    };
+
+    // The reqeust succeeded
+    return res.status(200).json(data);
+  } else {
+    const data = {
+      message: `Data patient yang sembuh tidak ditemukan`,
+    };
+
+    // Resource not found
+    return res.status(404).json(data);
+  }
 }
+
+// Get Dead Resource
+async dead(req, res) {
+  const status = "dead";
+  const patient = await Patient.findByStatus(status);
+  const total = await Patient.total(status);
+
+  if (patient) {
+    const data = {
+      message: `Menampilkan patient yang meninggal`,
+      total: total,
+      data: patient,
+    };
+
+    // The reqeust succeeded
+    return res.status(200).json(data);
+  } else {
+    const data = {
+      message: `Data patient yang meninggal tidak ditemukan`,
+    };
+
+    // Resource not found
+    return res.status(404).json(data);
+  }
+}
+}
+
 
 // membuat object PatientController
 const object = new PatientController();

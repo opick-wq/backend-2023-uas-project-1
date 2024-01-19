@@ -56,15 +56,29 @@ class Patient {
     });
   }
 
-  static findByStatus(status) {
+  static total(status) {
     return new Promise((resolve, reject) => {
-      const sql = "SELECT * FROM patients WHERE status = ?";
-      db.query(sql, status, (err, result) => {
-        const  [patients] = result;
-        resolve(result);
+      const sql = "SELECT COUNT(*) AS total FROM patients where status = ?";
+      db.query(sql, status, (err, results) => {
+        // destructure object results
+        const patient = results;
+        resolve(patient);
       });
     });
   }
+
+  static findByStatus(status) {
+    return new Promise((resolve, reject) => {
+      const sql = "SELECT * from patients WHERE status = ?";
+      db.query(sql, status, (err, results) => {
+        // destructure object results
+        const patient = results;
+        resolve(patient);
+      });
+    });
+  }
+
+
 
   
 
